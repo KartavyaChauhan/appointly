@@ -3,8 +3,31 @@ import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
+async function ensureSlotsExist() {
+  const count = await prisma.slot.count();
+  if (count === 0) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const slots = [];
+    for (let day = 1; day <= 7; day++) {
+      const currentDay = new Date(today);
+      currentDay.setDate(today.getDate() + day);
+      for (let hour = 9; hour < 17; hour++) {
+        const startTime = new Date(currentDay);
+        startTime.setHours(hour, 0, 0, 0);
+        const endTime = new Date(currentDay);
+        endTime.setHours(hour + 1, 0, 0, 0);
+        slots.push({ startTime, endTime, isBooked: false });
+      }
+    }
+    await prisma.slot.createMany({ data: slots });
+  }
+}
+
 export async function GET(request: Request) {
   try {
+    await ensureSlotsExist();
+
     const { searchParams } = new URL(request.url);
     const dateParam = searchParams.get('date');
 
