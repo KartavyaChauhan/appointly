@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id           String        @id @default(uuid())
+  name         String
+  email        String        @unique
+  appointments Appointment[]
+}
+
+model Appointment {
+  id          String   @id @default(uuid())
+  referenceId String   @unique 
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  slotId      String   @unique
+  slot        Slot     @relation(fields: [slotId], references: [id])
+  status      String   @default("CONFIRMED") // CONFIRMED, CANCELLED
+  createdAt   DateTime @default(now())
+}
+
+model Slot {
+  id          String       @id @default(uuid())
+  startTime   DateTime
+  endTime     DateTime
+  isBooked    Boolean      @default(false)
+  appointment Appointment?
+}
