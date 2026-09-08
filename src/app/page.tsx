@@ -13,7 +13,7 @@ export default function Home() {
   const [slots, setSlots] = useState<Slot[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
-  
+
   // Form state
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -69,7 +69,7 @@ export default function Home() {
       setSelectedSlot(null);
       setName('');
       setEmail('');
-      
+
       // Refresh slots
       fetchSlots();
     } catch (error: any) {
@@ -146,13 +146,13 @@ export default function Home() {
                       boxShadow: slot.isBooked ? 'none' : '0 2px 4px rgba(74, 124, 89, 0.05)'
                     }}
                     onMouseEnter={(e) => {
-                      if(!slot.isBooked) {
+                      if (!slot.isBooked) {
                         e.currentTarget.style.background = 'var(--primary)';
                         e.currentTarget.style.color = '#fff';
                       }
                     }}
                     onMouseLeave={(e) => {
-                      if(!slot.isBooked) {
+                      if (!slot.isBooked) {
                         e.currentTarget.style.background = '#fff';
                         e.currentTarget.style.color = 'var(--primary)';
                       }
@@ -171,7 +171,7 @@ export default function Home() {
       {/* Booking Modal */}
       {selectedSlot && (
         <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, 
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
           background: 'rgba(253, 252, 248, 0.7)', backdropFilter: 'blur(8px)',
           display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
         }}>
@@ -180,14 +180,14 @@ export default function Home() {
             <p style={{ color: 'var(--primary)', marginBottom: '2rem', fontSize: '1rem', fontWeight: 500 }}>
               {new Date(selectedSlot.startTime).toLocaleString([], { dateStyle: 'full', timeStyle: 'short' })}
             </p>
-            
+
             <form onSubmit={handleBook}>
               <div className="form-group">
                 <label className="form-label">Full Name</label>
-                <input 
-                  type="text" 
-                  className="input-field" 
-                  required 
+                <input
+                  type="text"
+                  className="input-field"
+                  required
                   value={name}
                   onChange={e => setName(e.target.value)}
                   placeholder="e.g. Jane Doe"
@@ -195,10 +195,10 @@ export default function Home() {
               </div>
               <div className="form-group">
                 <label className="form-label">Email Address</label>
-                <input 
-                  type="email" 
-                  className="input-field" 
-                  required 
+                <input
+                  type="email"
+                  className="input-field"
+                  required
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="jane@example.com"
